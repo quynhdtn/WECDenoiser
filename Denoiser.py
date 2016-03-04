@@ -63,7 +63,8 @@ class WEDenoiser(NNNet):
        :param regularization_lambda:
        :return:
        '''
-       Xi = np.asarray([self.weDict.getWE(xd) for xd in train_data])
+       Xi = np.asarray( [self.weDict.getWE(xd) for xd in train_data])
+       print (Xi)
        self.centroids = estimateAllCentroids(Xi,np.asarray(train_data_label), self.idx+"centroids.txt")
 
        role_list =  np.unique(train_data_label)
@@ -83,14 +84,17 @@ class WEDenoiser(NNNet):
                  regularization_name=regularization_name,
                  regularization_lambda=regularization_lambda)
 
-   def exportNewWE(self):
+   def exportNewWE(self, output):
        newWeDict= {}
        k,wes = self.weDict.getFullVobWEAndKeys()
        nwes = self.getHidden(wes).eval()
+       print (nwes)
        for i in range(len(k)):
-           newWeDict[k[i]]= np.asarray(nwes[i])
+           newWeDict[k[i]]= nwes[i]
 
-       return WEDict(full_dict=newWeDict)
+       nwed = WEDict(full_dict=newWeDict)
+       nwed.writeToFile(output)
+       return nwed
 
 
 if __name__=="__main__":

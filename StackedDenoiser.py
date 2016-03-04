@@ -23,11 +23,11 @@ class WEStackedDenoiser:
                 nI = hs
 
     def fit(self, train_data, train_data_label,  batch_size, training_epochs, learning_rate,
-            save_model_path= None,regularization_name=None, regularization_lambda=0.0001):
+            output,regularization_name=None, regularization_lambda=0.0001):
         self.denoisers[0].fit(train_data, train_data_label,  batch_size[0], training_epochs[0], learning_rate[0],
             None,regularization_name[0], regularization_lambda[0])
 
-        weD = self.denoisers[0].exportNewWE()
+        weD = self.denoisers[0].exportNewWE(output)
 
         if len(batch_size) == 1:
             batch_size = [batch_size[0]] * len(self.denoisers)
@@ -47,11 +47,11 @@ class WEStackedDenoiser:
 
 
         for i in range(1, len(self.denoisers)):
-            self.denoisers[i].weDict= weD
-            print(weD.full_dict['he'])
+            self.denoisers[i].weDict= WEDict(full_dict_path=output)
+            print (train_data)
             self.denoisers[i].fit(train_data, train_data_label,  batch_size[i], training_epochs[i], learning_rate[i],
             None,regularization_name[i], regularization_lambda[i])
-            weD = self.denoisers[i].exportNewWE()
+            weD = self.denoisers[i].exportNewWE(output)
 
 
     def exportNewWE(self):
@@ -122,8 +122,7 @@ if __name__=="__main__":
     wd = WEStackedDenoiser(nIn=int(args.nIn), hidden_layer_sizes=args.nHiddens, wefile=args.weFile)
 
 
-    wd.fit(X, Y, args.b, args.n, args.l, None,args.r, args.rl)
-    newwe = wd.exportNewWE()
-    newwe.writeToFile(args.outputFile)
+    wd.fit(X, Y, args.b, args.n,  args.l, args.outputFile, args.r, args.rl)
+
 
 

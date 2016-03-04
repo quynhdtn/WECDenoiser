@@ -13,6 +13,8 @@ class CentroidEstimator:
 
         self.classes = list( np.unique(np.asarray(C)) ) # class labels
         self.num_classes = len(self.classes)
+        print (X.get_value())
+        print (X)
         self.dim = X.get_value().shape[1]
 
 
@@ -155,7 +157,7 @@ def estimateAllCentroids(X, Y, output, learning_rate=0.0001, training_epochs=100
     rs={}
     for c in clusters:
         print (" Estimate for ",c)
-        rf = CentroidEstimator(th.shared(X), Y, c,learning_rate=0.0001, training_epochs=10, batch_size=30, output="centroid.tmp.txt")
+        rf = CentroidEstimator(th.shared(X), Y, c,learning_rate=0.0001, training_epochs=1, batch_size=30, output="centroid.tmp.txt")
         f = open ("centroid.tmp.txt", "r")
         for l in f.readlines():
             fo.write(l)
