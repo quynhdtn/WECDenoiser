@@ -157,7 +157,7 @@ def estimateAllCentroids(X, Y, output, learning_rate=0.0001, training_epochs=100
     rs={}
     for c in clusters:
         print (" Estimate for ",c)
-        rf = CentroidEstimator(th.shared(X), Y, c,learning_rate=0.0001, training_epochs=1, batch_size=30, output="centroid.tmp.txt")
+        rf = CentroidEstimator(th.shared(X), Y, c,learning_rate=0.0001, training_epochs=10, batch_size=30, output="centroid.tmp.txt")
         f = open ("centroid.tmp.txt", "r")
         for l in f.readlines():
             fo.write(l)
